@@ -1,0 +1,20 @@
+---
+- name:  looping over inventory
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Create servers
+      digital_ocean:
+        name: "{{ item.name }}"
+        state: present
+        loop:
+          - name: server1
+            disks: 3gb
+            ram: 15Gb
+            network:
+              nic01: 100Gb
+              nic02: 10Gb
+
+      loop_control:
+        label: "{{ item.name }}"

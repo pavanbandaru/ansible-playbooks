@@ -1,0 +1,31 @@
+---
+- name: Apahce webserver installation
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+       - name: Install httpd package
+         yum:
+           name: httpd
+           state: present
+
+       - name: Create a index.html
+         copy:
+           content: "Test page"
+           dest: /var/www/html/index.html
+
+       - name: Start httpd service
+         service:
+           name: httpd
+           state: started
+           enabled: true
+
+- name: Test the webserver URL
+  hosts: all
+  become: no
+  tasks:
+    - name: Connect to http://<hostname>
+      uri:
+        url: http://localhost
+        return_content: yes
+        status_code: 200

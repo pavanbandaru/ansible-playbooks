@@ -1,0 +1,20 @@
+---
+- name:  looping over inventory
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Show all the hosts in the inventory
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ groups['all'] }}"
+
+    - name: Show all the hosts in the current play
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ ansible_play_batch }}"
+
+    - name: Show all the hosts in the inventory
+      ansible.builtin.debug:
+        msg: "{{ item }}"
+      loop: "{{ query('inventory_hostnames', 'all') }}"

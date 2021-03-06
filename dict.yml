@@ -1,0 +1,14 @@
+---
+- name: dict2items
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: dict2items
+      debug:
+        msg: "{{ item.key }} - {{ item.value }}"
+      loop: "{{ tag_data | dict2items }}"
+      vars:
+        tag_data:
+          Environment: dev
+          Application: payment

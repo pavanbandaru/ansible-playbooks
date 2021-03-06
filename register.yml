@@ -1,0 +1,29 @@
+
+---
+- name: Register loop output as a variable
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Register loop output
+      shell: "echo {{ item }}"
+      loop:
+        - "one"
+        - "two"
+      register: echo
+    - name: Show register variale echo results
+      debug: var=echo
+
+    - name: Fail if return code is not 0
+      fail:
+        msg: "The command ({{ item.cmd }}) did not have a 0 return code"
+      when: item.rc != 0
+      loop: "{{ echo.results }}"
+
+    - name: Place the result of the current item in the variable
+      shell: echo "{{ item }}"
+      loop:
+        - one
+        - two
+      register: echo
+      changed_when: echo.stdout != "one"
