@@ -1,5 +1,5 @@
 ---
-- name:  looping over inventory
+- name:  looping over inventory example
   hosts: all
   become: true
   become_user: root
